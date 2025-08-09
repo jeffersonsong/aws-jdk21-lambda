@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "eu-central-1"
+  region = "us-east-2"
 }
 
 locals {
@@ -39,7 +39,7 @@ resource "aws_iam_role_policy_attachment" "logging" {
 
 # Lambda Function and Packaging
 resource "aws_s3_bucket" "bucket" {
-  bucket = "test-jar-2"
+  bucket = "test-jar-2-etYlvlYlSOPSDLKK"
 }
 
 resource "aws_s3_object" "lambda_jar" {
