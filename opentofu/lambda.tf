@@ -1,11 +1,3 @@
-provider "aws" {
-  region = "us-east-2"
-}
-
-locals {
-  lambda_payload_file = "${path.module}/../build/libs/awsjdk21lambda-0.0.1-SNAPSHOT-aws.jar"
-}
-
 # IAM Roles and Policies
 data "aws_iam_policy_document" "assume_role" {
   statement {
@@ -37,22 +29,17 @@ resource "aws_iam_role_policy_attachment" "logging" {
   role       = aws_iam_role.iam_for_lambda.name
 }
 
-# Lambda Function and Packaging
-resource "aws_s3_bucket" "bucket" {
-  bucket = "test-jar-2-etylvlylsopsdlkk"
-}
-
 resource "aws_s3_object" "lambda_jar" {
   bucket = aws_s3_bucket.bucket.id
-  key    = "test-lambda"
-  source = local.lambda_payload_file
-  etag   = filesha256(local.lambda_payload_file)
+  key    = var.lambda_filename
+  source = var.file_location
+  etag   = filesha256(var.file_location)
 }
 
 resource "aws_lambda_function" "test_lambda" {
-  function_name = "aws_jdk21_lambda"
+  function_name = var.lambda_function
   role          = aws_iam_role.iam_for_lambda.arn
-  handler       = "org.springframework.cloud.function.adapter.aws.FunctionInvoker::handleRequest"
+  handler       = var.lambda_handler
 
   s3_bucket         = aws_s3_bucket.bucket.id
   s3_key            = aws_s3_object.lambda_jar.key

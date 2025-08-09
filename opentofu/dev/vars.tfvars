@@ -1,0 +1,5 @@
+bucket = "test-jar-2-etylvlylsopsdlkk"
+lambda_function = "aws_jdk21_lambda"
+lambda_filename = "test-lambda"
+file_location = "../build/libs/awsjdk21lambda-0.0.1-SNAPSHOT-aws.jar"
+lambda_handler = "org.springframework.cloud.function.adapter.aws.FunctionInvoker::handleRequest"
